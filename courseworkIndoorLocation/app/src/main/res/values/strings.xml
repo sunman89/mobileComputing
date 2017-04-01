@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">courseworkIndoorLocation</string>
+    <string name="search_button">Start Search</string>
+    <string name="stop_button">Stop Search</string>
+    <string name="searching">Searching....</string>
+    <string name="latitude">Latitude: </string>
+    <string name="longitude">Longitude: </string>
+    <string name="floorLevel">Floor Level: </string>
+    <string name="accuracy">Accuracy: </string>
+    <string name="date">Date: </string>
+    <string name="time">Time: </string>
+    <string name="floorCert">Floor Certainty: </string>
+
+    <string name="intro">If searching takes too long, disconnect and reconnect to WIFI, and it should start working</string>
+
+    <string name="stairs">You are within 3 meters from the Stairs on this floor</string>
+    <string name="room736">You are within 3 meters from Room 736</string>
+    <string name="room724">You are within 3 meters from Room 724</string>
+</resources>

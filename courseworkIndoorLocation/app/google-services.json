@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "550686729206",
+    "firebase_url": "https://cwmobileindoorapp.firebaseio.com",
+    "project_id": "cwmobileindoorapp",
+    "storage_bucket": "cwmobileindoorapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:550686729206:android:a82d6b6b045b0cfc",
+        "android_client_info": {
+          "package_name": "com.example.sonny.courseworkindoorlocation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "550686729206-0ht7uajmq82ktlf39a913jq2k853m9e5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCd8rJ-zDm9wNLE30i8JSAiTG6Z2Ml7hlc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
