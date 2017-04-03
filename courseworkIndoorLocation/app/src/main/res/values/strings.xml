@@ -11,7 +11,19 @@
     <string name="time">Time: </string>
     <string name="floorCert">Floor Certainty: </string>
 
-    <string name="intro">If searching takes too long, disconnect and reconnect to WIFI, and it should start working</string>
+    <string name="statusAvailable">Status is available</string>
+    <string name="statusCalibrationChange">Calibration Changed</string>
+    <string name="statusLimited">Status is limited</string>
+    <string name="statusService">Status is out of service</string>
+    <string name="statusUnavailable">Status is temporary unavailable</string>
+    <string name="calibrationEx">Calibration is excellent</string>
+    <string name="calibrationGood">Calibration is good</string>
+    <string name="calibrationPoor">Calibration is poor</string>
+    <string name="permissions">NB: This app needs permissions to be enabled for it to work: wifi and location</string>
+
+    <string name="intro">WIFI and Location has to be enabled for the app to get your location.
+        \nIt may take up to a minute or two to start getting your location, so be patient.
+        \nLandscape mode can give inaccurate readings of location and sometimes freeze after getting first location</string>
 
     <string name="stairs">You are within 3 meters from the Stairs on this floor</string>
     <string name="room736">You are within 3 meters from Room 736</string>

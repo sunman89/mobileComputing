@@ -35,8 +35,10 @@
             android:name="com.indooratlas.android.sdk.API_SECRET"
             android:value="m7k+tc63IoYoQEi+Z2dmKJD72YDNpL4nnJ2eXM/r/nq09w5+ioVERD6F8rISjim8dfAmo10qKqkY8Hg/ziIZv3gw8nkBbkIrAkE+mf9v1jcg0hVKGn5C7Y1JpDCVbg=="/>
         <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDIZDBigKPp9uS5fEDu47lfejA0aaNYZ9E"/>
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+
 
         <activity android:name=".MainActivity">
             <intent-filter>

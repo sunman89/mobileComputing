@@ -1,9 +1,11 @@
 package com.example.sonny.courseworkindoorlocation;
 
 import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,7 +23,6 @@ import com.indooratlas.android.sdk.IALocationManager;
 import com.indooratlas.android.sdk.IALocationRequest;
 import com.indooratlas.android.sdk.IARegion;
 import com.indooratlas.android.sdk.resources.IAFloorPlan;
-import com.indooratlas.android.sdk.resources.IALatLng;
 import com.indooratlas.android.sdk.resources.IAResourceManager;
 import com.indooratlas.android.sdk.resources.IAResult;
 import com.indooratlas.android.sdk.resources.IAResultCallback;
@@ -32,7 +33,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.indooratlas.android.sdk.IALocationManager.STATUS_AVAILABLE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -76,17 +76,12 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "Point of interest Location 1 = " +  location1.toString());
         Integer mPointsLength = mLocations.length;
         Log.d(TAG, "Points length = " + mPointsLength);
-        Log.d(TAG, "Location 1 Latitude = " + location1.getLatitude());
-        Log.d(TAG, "Location 1 Longitude = " + location1.getLongitude());
 
         for (int i = 0; i < mPointsLength; i++){
             Log.d(TAG, "Entered for loop");
-            // if(mLocFloorLevel == mLocations[i].getFloorLevel()){
             // used this if statement here instead of before the loop starts, for if in future more points of interest
             // were added and on different floors
             if(mLocFloorLevel == mLocations[i].getFloorLevel()){
-                // Integer mPoint = pointsOfInterestCheck(mLocLatitude,mLocLongitude,mLocations[i].getLatitude(),
-                       // mLocations[i].getLongitude());
                 Location location2 = new Location (getString(mPoints[i]));
                 location2.setLatitude(mLocations[i].getLatitude());
                 location2.setLongitude(mLocations[i].getLongitude());
@@ -100,28 +95,16 @@ public class MainActivity extends AppCompatActivity {
                 // put website used into the labs bookmarks folder
                 // https://devdiscoveries.wordpress.com/2010/02/01/android-distance-between-two-points-on-the-earth/
                 if(mPoint <= 3){
-                    // then here get the string and toast it
-                    // use mPoints and getString(mPoints[i]) to get the actual string needed to display in the toast
-                    // getString(mPoints[i]);
-                    // here use a method that does the toast, and send it the integer
                     Log.d(TAG, "mPoint is less than or equal to 3 meters");
-                    displayToastInterest(i);
+                    String mToast = getString(mPoints[i]);
+                    Toast.makeText(this, mToast, Toast.LENGTH_SHORT).show();
                 }
             }
         }
-
-    }
-
-    private void displayToastInterest(Integer i){
-        // here get the i, use the i to get the string, and then display it in a toast
-        String mToast = getString(mPoints[i]);
-        Toast.makeText(this, mToast, Toast.LENGTH_SHORT).show();
-
     }
 
     private void updateDatabase(String mTime,Double mLat,Double mLong, String mCurrentDate, Integer mFloor,
                                 Float mAccuracy, Float mCertainty){
-       // mDatabaseRef.child("tracking").child("time").setValue(mTime);
         mDatabaseRef.child("tracking").child(mCurrentDate).child(mTime).child("Latitude").setValue(mLat);
         mDatabaseRef.child("tracking").child(mCurrentDate).child(mTime).child("Longitude").setValue(mLong);
         mDatabaseRef.child("tracking").child(mCurrentDate).child(mTime).child("Floor Level").setValue(mFloor);
@@ -130,20 +113,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Got this code from stackoverflow.com/questions/13241251/timestamp-to-string-date
-    private String getDate(long time){
+    public static String getDate(long time){
         DateFormat formatDate = new SimpleDateFormat("dd-MM-yyyy");
         Date currentDate = (new Date(time));
         return formatDate.format(currentDate);
     }
 
-    private String getCurrentDateTime(long time){
-
-        DateFormat formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        Date currentDateTime = (new Date(time));
-        return formatDate.format(currentDateTime);
-    }
-
-    private String getCurrentTime(long time){
+    public static String getCurrentTime(long time){
 
         DateFormat formatDate = new SimpleDateFormat("HH:mm:ss");
         Date currentTime = (new Date(time));
@@ -156,59 +132,73 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onLocationChanged(IALocation location) {
             Log.d(TAG, "location changed");
-            Log.d(TAG, "Latitude: " + location.getLatitude());
-            Log.d(TAG, "Longitude: " + location.getLongitude());
-            Log.d(TAG, "Accuracy: " + location.getAccuracy());
-            Log.d(TAG, "To string: " + location.toString());
-            Log.d(TAG, "mSearchPressed = " + msearchPressed);
+            Log.d(TAG, "Location To string: " + location.toString());
 
+            if(msearchPressed != null && msearchPressed == true){
+                Log.d(TAG, "output to result and update database");
+                mFloorPlanImage.setVisibility(View.VISIBLE);
 
-            if(msearchPressed == true){
-                Log.d(TAG, "output to result");
-                IALatLng latLng = new IALatLng(location.getLatitude(), location.getLongitude());
-
-                mResultText.setText("\n" + getString(R.string.latitude) + location.getLatitude() +
-                        "\n" + getString(R.string.longitude) + location.getLongitude() +
-                        "\n" + getString(R.string.accuracy) + location.getAccuracy() +
-                        "\n" + getString(R.string.floorLevel) + location.getFloorLevel() +
-                        " , " + getString(R.string.floorCert) + location.getFloorCertainty() +
-                        "\n" + getString(R.string.date) + getDate(location.getTime()) +
-                        " , " + getString(R.string.time) + getCurrentTime(location.getTime()));
+                mResultText.setText("\n" + getString(R.string.latitude) + " " +  location.getLatitude() +
+                        "\n" + getString(R.string.longitude) + " " + location.getLongitude() +
+                        "\n" + getString(R.string.accuracy) + " " + location.getAccuracy() +
+                        "\n" + getString(R.string.floorLevel) + " " +  location.getFloorLevel() +
+                        " , " + getString(R.string.floorCert) + " " + location.getFloorCertainty() +
+                        "\n" + getString(R.string.date) + " " +  getDate(location.getTime()) +
+                        " , " + getString(R.string.time) + " " +  getCurrentTime(location.getTime()));
 
                 updateDatabase(getCurrentTime(location.getTime()), location.getLatitude(), location.getLongitude(),
                         getDate(location.getTime()), location.getFloorLevel(), location.getAccuracy(),
                         location.getFloorCertainty());
-
-                // Need to call the method to search for close by locations
-                // need to use the Haversine formula to get the distance between two points
-                // Then times it by 1000, to get meters
                 pointOfInterest(location);
             }
-
         }
 
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
-            // handle service status change
-            // if status is 11- calibration changed, have a switch thing to display what calibration level it is at 0,1,2
-            // have reboot message at the start screen. Which gets replaced once start searching.
-            // use switch statement here and output correct stuff
             Log.d(TAG, "onStatusChanged");
             if(status == IALocationManager.STATUS_AVAILABLE)
             {
-                Log.d(TAG, "onStatusChanged - status available");
+                String mToast = getString(R.string.statusAvailable);
+                Toast.makeText(MainActivity.this, mToast, Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onStatusChanged = " + mToast);
             }
-            else
+            else if(status == IALocationManager.STATUS_LIMITED)
             {
-                Log.d(TAG, "onStatusChanged - " + status);
-                if(status == 11)
-                {
-                    Log.d(TAG, "calibration is - " + extras);
+                String mToast = getString(R.string.statusLimited);
+                Toast.makeText(MainActivity.this, mToast, Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onStatusChanged = " + mToast);
+
+            }
+            else if(status == IALocationManager.STATUS_OUT_OF_SERVICE){
+                String mToast = getString(R.string.statusService);
+                Toast.makeText(MainActivity.this, mToast, Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onStatusChanged = " + mToast);
+
+            }
+            else if(status == IALocationManager.STATUS_TEMPORARILY_UNAVAILABLE){
+                String mToast = getString(R.string.statusUnavailable);
+                Toast.makeText(MainActivity.this, mToast, Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onStatusChanged = " + mToast);
+
+            }
+            else if(status == IALocationManager.STATUS_CALIBRATION_CHANGED){
+                Log.d(TAG, "onStatusChanged = " + status);
+                Log.d(TAG, "calibration is = " + extras);
+                if(msearchPressed != null && msearchPressed == true){
+                    if(extras.getInt("quality") == IALocationManager.CALIBRATION_POOR)
+                    {
+                        mSearchtext.setText(getString(R.string.searching) + "\n" + getString(R.string.calibrationPoor));
+                    }
+                    else if(extras.getInt("quality") == IALocationManager.CALIBRATION_GOOD){
+                        mSearchtext.setText(getString(R.string.searching) + "\n" + getString(R.string.calibrationGood));
+                    }
+                    else if(extras.getInt("quality") == IALocationManager.CALIBRATION_EXCELLENT){
+                        mSearchtext.setText(getString(R.string.searching) + "\n" + getString(R.string.calibrationEx));
+                    }
                 }
             }
         }
     };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,9 +226,9 @@ public class MainActivity extends AppCompatActivity {
             msearchPressed = savedInstanceState.getBoolean(KEY_INDEX,false);
             Log.d(TAG, "msearchPressed = " + msearchPressed);
             if(msearchPressed == true){
-                Log.d(TAG, "msearchPressed == true apparently");
+                Log.d(TAG, "msearchPressed == true, in saved instance");
+                mFloorPlanImage.setVisibility(View.GONE);
                 mSearchtext.setText(R.string.searching);
-                mFloorPlanImage.setVisibility(View.VISIBLE);
             }
         }
 
@@ -246,24 +236,10 @@ public class MainActivity extends AppCompatActivity {
         mSearch.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Log.d(TAG, "onSeach button pressed");
+                Log.d(TAG, "onSearch button pressed");
                 mSearchtext.setText(R.string.searching);
-                mFloorPlanImage.setVisibility(View.VISIBLE);
                 msearchPressed = true;
                 onResume();
-                // Put button stuff in here, search button when pressed, makes text searching appear in the textview
-                // and it makes the latitude and longitude appear in there aswell, maybe also the time
-                // Then do the location manager, with that can get the location stuff
-                // On location change, make it update the textview and send it to the real time database for the firebase
-                // Send realtime database stuff, longitude, latitude, and time
-                // In here will need to create the locations for when it get close to them.
-                // Need to have a method that takes in the current location, and compares it to the locations that have been
-                // created by looping through them and getting the accuracy of them to current location
-                // might have to get the long and lat of each one and then use a method to test if they are within 3 meters
-                // by comparing the long lat of current location and long lat of the location of something
-                // if it is close, then pop up a toast
-                // use this function http://www.movable-type.co.uk/scripts/latlong.html to get kms
-                // convert kms to meters then  test if it is below 3, if so bring up the toast
             }
         });
 
@@ -271,24 +247,24 @@ public class MainActivity extends AppCompatActivity {
         mStop.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                // When press the stop button, clear the textview and activate the ondestroy method stuff or onpause stuff
                 Log.d(TAG, "stop button pressed");
                 mSearchtext.setText("");
                 mResultText.setText(getString(R.string.intro));
                 mFloorPlanImage.setVisibility(View.GONE);
                 msearchPressed = false;
                 onPause();
-
             }
         });
-
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);
         Log.d(TAG, "onSavedInstanceState");
-        savedInstanceState.putBoolean(KEY_INDEX, msearchPressed);
+        if(msearchPressed != null)
+        {
+            savedInstanceState.putBoolean(KEY_INDEX, msearchPressed);
+        }
     }
 
     @Override
@@ -302,7 +278,6 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "mIALocation register region listener");
             mIALocationManager.registerRegionListener(mRegionListener);
         }
-
     }
 
     @Override
@@ -316,7 +291,6 @@ public class MainActivity extends AppCompatActivity {
             mIALocationManager.unregisterRegionListener(mRegionListener);
             Log.d(TAG, "mIALocation unregister region listener");
         }
-
     }
 
     @Override
@@ -335,7 +309,15 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Log.d(TAG, "onRequestPermissions");
-        //Handle if any of the permissions are denied, in grantResults
+        for (int i=0; i < grantResults.length; i++)
+        {
+            if (grantResults[i] != PackageManager.PERMISSION_GRANTED)
+            {
+                String mToast = getString(R.string.permissions);
+                Toast.makeText(MainActivity.this, mToast, Toast.LENGTH_SHORT).show();
+            }
+        }
+
     }
 
     private IARegion.Listener mRegionListener = new IARegion.Listener() {
@@ -383,10 +365,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void handleFloorPlanChange(IAFloorPlan newFloorPlan) {
         Log.d(TAG, "handle floor plan change method");
+        Log.d(TAG, "floor plan info" + newFloorPlan.toString());
         Picasso.with(this)
-                .load(newFloorPlan.getUrl())
-                .into(mFloorPlanImage);
+            .load(newFloorPlan.getUrl())
+            .into(mFloorPlanImage);
     }
-
-
 }

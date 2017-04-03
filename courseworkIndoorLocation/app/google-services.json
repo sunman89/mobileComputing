@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "550686729206-c7rpflutc13m19uu21lmboo5tqt9e1rr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sonny.courseworkindoorlocation",
+            "certificate_hash": "018fa49e7450bc88408bb28932b3ea716a33e9d8"
+          }
+        },
+        {
           "client_id": "550686729206-0ht7uajmq82ktlf39a913jq2k853m9e5.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "550686729206-0ht7uajmq82ktlf39a913jq2k853m9e5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
