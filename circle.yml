@@ -1,14 +1,17 @@
 
-override:
-    # start the emulator
+## Customize test commands
+test:
+  pre:
     - emulator -avd circleci-android24 -no-window:
         background: true
         parallel: true
-    # wait for it to have booted
     - circle-android wait-for-boot
-    # run tests  against the emulator.
-    - ./gradlew connectedAndroidTest
-    # copy the build outputs to artifacts
-    - cp -r my-project/build/outputs $CIRCLE_ARTIFACTS
-    # copy the test results to the test results directory.
-    - cp -r my-project/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
+    - echo y | android update sdk --no-ui --all --filter "com.google.gms:google-services:3.0.0"
+    - echo y | android update sdk --no-ui --all --filter "com.indooratlas.android:indooratlas-android-sdk:2.3.2@aar"
+    
+  post:
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+
+    override:
+        - adb install path/to/build.apk
