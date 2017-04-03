@@ -1,0 +1,15 @@
+
+## Customize dependencies
+dependencies:
+  pre:
+    - echo y | android update sdk --no-ui --all --filter "com.android.tools.build:gradle:2.2.3"
+    - echo y | android update sdk --no-ui --all --filter "com.google.gms:google-services:3.0.0"
+
+## Customize test commands
+test:
+  pre:
+    - emulator -avd circleci-android24 -no-window:
+        background: true
+        parallel: true
+    - circle-android wait-for-boot
+
