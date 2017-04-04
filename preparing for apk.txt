@@ -1,6 +1,0 @@
-https://developer.android.com/studio/publish/index.html
-https://developer.android.com/studio/run/index.html
-https://developer.android.com/studio/publish/preparing.html
-https://developer.android.com/studio/publish/versioning.html
-
-Use these to prepare app for apk
