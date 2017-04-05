@@ -9,6 +9,26 @@ Points of interest are: Room 724, Stairs for that floor, and Room 736.
 • Circle CI/Travis CI output = was success, all tests passed
 https://circleci.com/gh/sunman89/mobileComputing/16 
 
+The rest of your commands were successful:
+    Starting the build
+    Start container
+    Enable SSH
+    Restore source cache
+    Checkout using deploy key: c7:fb:5b:8c:2a:4f:2b:f8:a6:b3:10:f8:92:69:24:b1
+    Configure the build
+    Restore cache
+    Save cache
+    emulator -avd circleci-android24 -no-window
+    circle-android wait-for-boot
+    echo y | android update sdk --no-ui --all --filter "com.google.gms:google-services:3.0.0"
+    echo y | android update sdk --no-ui --all --filter "com.indooratlas.android:indooratlas-android-sdk:2.3.2@aar"
+    mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+    Collect test metadata
+    Collect artifacts
+    Disable SSH
+
+
 • Any additional comments
 Sometimes the app might freeze for a bit whilst getting the users location, that might just be my phone though.
 Landscape mode does not seem to work properly, I think that is because of the bearing of the phone being different
